@@ -1,0 +1,20 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+contract EtherTransfer {
+    address payable public owner;
+
+    constructor() {
+        owner = payable(msg.sender);
+    }
+
+    function transferEther(address payable recipient, uint amount) public {
+        require(msg.sender == owner, "Only the owner can transfer ether");
+        require(address(this).balance > amount, "Insufficient balance to cover transfer and gas");
+        recipient.transfer(amount);
+    }
+
+    function getSenderAddress() public view returns (address) {
+        return msg.sender;
+    }
+}
