@@ -1,0 +1,1 @@
+This repo contains a simple smart contract to transfer ETH on the Sepolia testnet and a HTML file that can server as a decentralized app. This app can interact with the testnet blockchain through the smart contract.
