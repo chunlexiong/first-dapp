@@ -2,13 +2,13 @@
 pragma solidity ^0.8.19;
 
 contract EtherTransfer {
-    address payable public owner;
+    address public owner;
 
     constructor() {
-        owner = payable(msg.sender);
+        owner = msg.sender;
     }
 
-    function transferEther(address payable recipient, uint amount) public {
+    function transferEther(address payable recipient, uint amount) public payable{
         require(msg.sender == owner, "Only the owner can transfer ether");
         require(owner.balance > amount, "Insufficient balance to cover transfer and gas");
         recipient.transfer(amount);

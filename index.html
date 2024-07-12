@@ -56,8 +56,26 @@
               
         //Replace the following two values
         //Make sure the TransferContractAddress is in double single/double quotes 
-        const TransferContractAddress = "0x3FD01b288e941BE6dB1535fC27bA5Efed09DcABF";
+        const TransferContractAddress = "0x1f765066d4ADBF4CF193be759426F8a5eFe1f1b9";
         const TransferContractABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "recipient",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transferEther",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -78,33 +96,28 @@
 	},
 	{
 		"inputs": [],
-		"name": "owner",
+		"name": "getSenderBalance",
 		"outputs": [
 			{
-				"internalType": "address payable",
+				"internalType": "uint256",
 				"name": "",
-				"type": "address"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"inputs": [
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
 			{
-				"internalType": "address payable",
-				"name": "recipient",
+				"internalType": "address",
+				"name": "",
 				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
 			}
 		],
-		"name": "transferEther",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	}
 ];
@@ -118,7 +131,7 @@
         sendETH = async function() {
               const recipient = document.getElementById("recipient").value
               const amount = document.getElementById("amount").value * 1E18
-              document.getElementById("confirmMSG").innerText = `${amount/1E18} will be sent to ${recipient}`;
+              document.getElementById("confirmMSG").innerText = `${amount/1E18} ETH will be sent to ${recipient}`;
               await TransferContractInstance.write.transferEther([recipient, amount], {
                 account:address
               });
