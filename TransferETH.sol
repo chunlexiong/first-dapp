@@ -8,17 +8,18 @@ contract EtherTransfer {
         owner = msg.sender;
     }
 
+    receive() external payable {}
+
     function transferEther(address payable recipient, uint amount) public payable{
+        uint totalGas = 0.003 ether;
         require(msg.sender == owner, "Only the owner can transfer ether");
-        require(owner.balance > amount, "Insufficient balance to cover transfer and gas");
-        recipient.transfer(amount);
+        uint totalAmount = totalGas + amount;
+        require(owner.balance >= totalAmount, "Insufficient balance to cover transfer and gas");
+        (bool success, ) = recipient.call{value: amount}("");
+        require(success, "Attention: transfer failed.");
     }
 
-    function getSenderAddress() public view returns (address) {
-        return msg.sender;
-    }
-
-    function getSenderBalance() public view returns (uint) {
-        return owner.balance;
+    function getContractBalance() public view returns (uint) {
+        return address(this).balance;
     }
 }

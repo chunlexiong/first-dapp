@@ -28,7 +28,6 @@
       <script>
       //here we are just declaring two variables. We will be assigning them their respective values in the next script
               var sendETH
-              var receiveETH
       </script>
 
       <script type="module">
@@ -56,7 +55,7 @@
               
         //Replace the following two values
         //Make sure the TransferContractAddress is in double single/double quotes 
-        const TransferContractAddress = "0x1f765066d4ADBF4CF193be759426F8a5eFe1f1b9";
+        const TransferContractAddress = "0x78e738ab51e3faCBEE17E7cb6cD3c2ef7eebCDcA";
         const TransferContractABI = [
 	{
 		"inputs": [
@@ -82,21 +81,12 @@
 		"type": "constructor"
 	},
 	{
-		"inputs": [],
-		"name": "getSenderAddress",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "payable",
+		"type": "receive"
 	},
 	{
 		"inputs": [],
-		"name": "getSenderBalance",
+		"name": "getContractBalance",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -125,7 +115,7 @@
         const TransferContractInstance = getContract({
                   address: TransferContractAddress,
                   abi: TransferContractABI,
-                  client: walletClient,
+                  client: walletClient
                 });
     
         sendETH = async function() {
@@ -133,16 +123,10 @@
               const amount = document.getElementById("amount").value * 1E18
               document.getElementById("confirmMSG").innerText = `${amount/1E18} ETH will be sent to ${recipient}`;
               await TransferContractInstance.write.transferEther([recipient, amount], {
-                account:address
+                account: address,
+                value: 1000000000000000
               });
-              document.getElementById("sendMSG").innerText = `${amount} has been sent to ${recipient}`;
-            }
-          
-        receiveETH = async function() {
-                const senderAddress = await TransferContractInstance.read.getSenderAddress({
-                    account:address
-                });
-                document.getElementById("senderAddress").innerText = `Receiving address is: ${senderAddress}`;
+              document.getElementById("sendMSG").innerText = `${amount/1E18} ETH has been sent to ${recipient}`;
             }
       </script>
       <div>
@@ -155,8 +139,6 @@
         <button onclick="sendETH()">Send</button>
         <p id="confirmMSG"></p>
         <p id="sendMSG"></p>
-        <button onclick="receiveETH()">Receive</button>
-        <p id="senderAddress"></p>
       </div>
    </body>
 </html>
