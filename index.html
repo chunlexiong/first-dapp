@@ -121,10 +121,11 @@
         sendETH = async function() {
               const recipient = document.getElementById("recipient").value
               const amount = document.getElementById("amount").value * 1E18
+              const value = BigInt(amount)
               document.getElementById("confirmMSG").innerText = `${amount/1E18} ETH will be sent to ${recipient}`;
               await TransferContractInstance.write.transferEther([recipient, amount], {
                 account: address,
-                value: 1000000000000000
+                value: value
               });
               document.getElementById("sendMSG").innerText = `${amount/1E18} ETH has been sent to ${recipient}`;
             }
